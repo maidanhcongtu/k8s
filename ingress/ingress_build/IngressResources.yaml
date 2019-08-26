@@ -1,0 +1,13 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: test-ingress
+  namespace: mhdanh
+spec:
+  rules:
+  - host: ingress.mhdanh.com
+    http:
+      paths:
+      - backend:
+          serviceName: mdbackend-service
+          servicePort: 80

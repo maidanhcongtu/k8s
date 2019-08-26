@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mdbackend-deployment
+  namespace: mhdanh
+spec:
+  replicas: 1
+  selector:
+    matchLabels:              # tells what pods the deployment will apply to, refer to line number 11 for pod template
+      app: mdbackend
+  template:                   # actually, this is the pod template, describes a pod that is launched
+    metadata:
+      labels:
+        app: mdbackend # this should match with the matchLabels value above, otherwise, this kind of pod will not be controlled by the above deployment
+    spec:
+      containers:
+      - name: mdbackend-container
+        image: asia.gcr.io/mhdanh-hello-kubernete/mdbackend
+        # Add opening port
+        ports:                                      #+
+        - containerPort: 8080                       #+
+          name: http                                #+
+        - containerPort: 9990                       #+
+          name: http-admin                          #+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mdbackend-service
+  namespace: mhdanh
+spec:
+  type: ClusterIP
+  selector:
+    app: mdbackend
+  ports:
+  - port: 80
+    targetPort: 8080
+    protocol: TCP
