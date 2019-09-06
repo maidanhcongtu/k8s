@@ -3,6 +3,20 @@ kind: Ingress
 metadata:
   name: test-ingress
   namespace: mhdanh
+  annotations:
+    nginx.ingress.kubernetes.io/app-root: /mdbackend
+    nginx.ingress.kubernetes.io/proxy-body-size: 50m
+    nginx.ingress.kubernetes.io/server-snippet: |
+        set $forbidden 0;
+        if ($request_uri ~* "(path/error)" ){
+          set $forbidden 1;
+        }
+        if ($request_uri ~* "(path/error)" ){
+          set $forbidden 1;
+        }
+        if($forbidden = 1){
+          return 403;
+        }
 spec:
   rules:
   - host: ingress.mhdanh.com
