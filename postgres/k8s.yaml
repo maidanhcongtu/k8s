@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sample-postgres
+  template:
+    metadata:
+      labels:
+        app: sample-postgres
+    spec:
+      containers:
+      - name: sample-postgres
+        image: gcr.io/klara-practice/sample-postgres
+        ports:
+        - containerPort: 5432
+          name: port
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: sample-postgres
+spec:
+  selector:
+    app: sample-postgres
+  ports:
+  - protocol: TCP
+    targetPort: 5432
+    port: 5432
+    name: port
+  type: NodePort
+#  type: LoadBalancer
+  
