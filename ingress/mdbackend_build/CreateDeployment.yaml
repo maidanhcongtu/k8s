@@ -30,6 +30,7 @@ metadata:
   namespace: mhdanh
 spec:
   type: ClusterIP
+#  type: NodePort
   selector:
     app: mdbackend
   ports:

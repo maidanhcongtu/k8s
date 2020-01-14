@@ -1,0 +1,1 @@
+docker run -u root --rm -p 9090:8080 -p 50000:50000 -v D:\Jenkins-Data:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock jenkinsci/blueocean
