@@ -1,10 +1,10 @@
 version: '3'
 services:
-  db:
-    image: 'mypostgres'
-    ports:
-      - '6543:5432'
-  api_gateway:
+  #db:
+  #  image: 'mypostgres'
+  #  ports:
+  #    - '6543:5432'
+  api-gateway:
     image: nginx:latest
     #container_name: api_gateway
     #restart: always
@@ -12,23 +12,20 @@ services:
      - ./nginx.conf:/etc/nginx/conf.d/default.conf
     ports:
       - 8080:8080
+
   jwt-service:
     image: 'gcr.io/klara-repo/jwt_service'
     environment:
       IVY_HOST_PORT: 'http://192.168.72.47:8081'
-      #LUZ_TENANT_URL: 'http://luztenant-service:8080/luztenant/api/'
       LUZ_LOGIN_MODULE_LOGINURL: 'http://192.168.72.47:8081/ivy/pro/designer/authentication_tool_ivy/145652E81C6B01EE'
-    ports:
-      - 8181:8080
+
   luztenant-service:
     image: 'gcr.io/klara-repo/luztenant-service'
     environment:
       LUZ_TENANT_JDBC: 'jdbc:postgresql://192.168.72.47:5432/luz_tenant'
       LUZ_TENANT_DB_USER: 'postgres'
       LUZ_TENANT_DB_PASS: 'postgres'
-      #LUZ_SEC_HOST_PORT: 'http://jwt-service:8080'
-    ports:
-      - 8282:8080
+
   xent-rest:
     image: 'gcr.io/klara-repo/xent-rest'
     environment:
@@ -38,62 +35,44 @@ services:
       IVY_SYSTEM_JDBC: 'jdbc:postgresql://192.168.72.47:5432/ivySystemDb'
       IVY_SYSTEM_DB_USER: 'postgres'
       IVY_SYSTEM_DB_PASS: 'postgres'
-      #JWT_SERVICE_HOST_PORT: 'http://jwt-service:8080'
-      #LUZFIN_FINANCE_HOST_PORT: 'http://luzfin_finance:8080'
-      #LUZ_COMPENSATION_HOST_PORT: 'http://luz-compensation:8080'
-    ports:
-      - 8383:8080
+
   luz-person:
     image: 'gcr.io/klara-repo/luz-person'
     environment:
-      #JWT_SERVICE_HOST_PORT: 'http://jwt-service:8080'
       LUZ_PERSON_JDBC: 'jdbc:postgresql://192.168.72.47:5432/luz_person'
-    ports:
-      - 8484:8080
+
   luz-compensation:
     image: 'gcr.io/klara-repo/luz-compensation'
     environment:
       LUZ_COMPENSATION_JDBC: 'jdbc:postgresql://192.168.72.47:5432/luz_compensation'
       LUZ_COMPENSATION_DB_USER: 'postgres'
       LUZ_COMPENSATION_DB_PASS: 'postgres'
-      #JWT_SERVICE_HOST_PORT: 'http://jwt-service:8080'
-      #LUZFIN_FINANCE_HOST_PORT: 'http://luzfin_finance:8080'
-      #LUZ_ABOUT_HOST_PORT: 'tbd'
-      #LUZ_POS_HOST_PORT: 'http://jwt:8080'
-      #LUZ_MOBILIAR_HOST_PORT: 'http://jwt:8080'
-      #LUZ_ACCOUNTING_HOST_PORT: 'http://luz_accounting:8080'
-      #LUZ_PERSON_HOST_PORT: 'http://luz-person:8080'
-    ports:
-      - 8585:8080
+
   luzfin-finance:
     image: 'gcr.io/klara-repo/luzfin-finance'
     environment:
       LUZFIN_JDBC: 'jdbc:postgresql://192.168.72.47:5432/luz_finance'
       LUZFIN_DB_USER: 'postgres'
       LUZFIN_DB_PASS: 'postgres'
-      #LUZ_SEC_HOST_PORT: 'http://jwt-service:8080'
-      #LUZ_TENANT_HOST_PORT: 'http://luztenant-service:8080'
-      #LUZ_PERSON_HOST_PORT: 'http://luz-person:8080'
-      #LUZ_COMPENSATION_HOST_PORT: 'http://luz-compensation:8080'
-      #LUZFIN_HOST_PORT: 'http://luzfin-finance:8080'
-      #LUZ_ACCOUNTING_HOST_PORT: 'http://luz_accounting:8080'
-      #LUZ_KEYVALUESTORE_HOST_PORT: 'http://luz-person:8080'
-      #LUZ_ARTICLE_HOST_PORT: 'http://luz_article:8080'
-    ports:
-      - 8686:8080
+
   luz-accounting:
-    image: 'gcr.io/klara-repo/luzfin-finance'
+    image: 'gcr.io/klara-repo/luz-accounting'
     environment:
-      LUZFIN_JDBC: 'jdbc:postgresql://192.168.72.47:5432/luz_finance'
-      LUZFIN_DB_USER: 'postgres'
-      LUZFIN_DB_PASS: 'postgres'
-      #LUZ_SEC_HOST_PORT: 'http://jwt-service:8080'
-      #LUZ_TENANT_HOST_PORT: 'http://luztenant-service:8080'
-      #LUZ_PERSON_HOST_PORT: 'http://luz-person:8080'
-      #LUZ_COMPENSATION_HOST_PORT: 'http://luz-compensation:8080'
-      #LUZFIN_HOST_PORT: 'http://luzfin-finance:8080'
-      #LUZ_ACCOUNTING_HOST_PORT: 'http://luz-accounting:8080'
-      #LUZ_KEYVALUESTORE_HOST_PORT: 'http://luz-person:8080'
-      #LUZ_ARTICLE_HOST_PORT: 'http://luz_article:8080'
-    ports:
-      - 8787:8080
+      LUZ_ACCOUNTING_JDBC: 'jdbc:postgresql://192.168.72.47:5432/luzaccounting'
+      LUZ_ACCOUNTING_DB_USER: 'postgres'
+      LUZ_ACCOUNTING_DB_PASS: 'postgres'
+      IVY_HOST_PORT: 'http://192.168.72.47:8081'
+
+  luz-admin-service:
+    image: 'gcr.io/klara-repo/luz-admin-service'
+    environment:
+      LUZ_SYSTEM_JDBC: 'jdbc:postgresql://192.168.72.47:5432/luz_system'
+      LUZ_SYSTEM_DB_USER: 'postgres'
+      LUZ_SYSTEM_DB_PASS: 'postgres'
+
+  luz-article:
+    image: 'gcr.io/klara-repo/luz-article'
+    environment:
+      LUZ_ARTICLE_JDBC: 'jdbc:postgresql://192.168.72.47:5432/luzarticle'
+      LUZ_ARTICLE_DB_USER: 'postgres'
+      LUZ_ARTICLE_DB_PASSWORD: 'postgres'

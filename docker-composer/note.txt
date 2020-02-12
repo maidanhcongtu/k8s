@@ -1,0 +1,4 @@
+docker-compose stop/start/restart [service]
+docker-compose rm -f [service]
+docker-compose pull
+docker-compose up -d [service]
