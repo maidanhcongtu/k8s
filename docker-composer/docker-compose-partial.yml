@@ -1,0 +1,28 @@
+# kubectl port-forward svc/api-gateway --address 0.0.0.0 8080:8080 -n devgcp
+
+# Create temp luz-database tunnel for using port-forward
+#1. kubectl -n devgcp run luz-database-tunnel -it --image=alpine/socat --tty --rm --expose=true --port=5432 tcp-listen:5432,fork,reuseaddr tcp-connect:luz-database:5432
+
+# Then keep the termial running. Run port-forward
+#2. kubectl port-forward svc/luz-database-tunnel --address 0.0.0.0 6543:5432 -n devgcp
+version: '3.7'
+services:
+  luzfin-finance:
+    build:
+      context: 'D:\Avatar\LUZ\project-service\luzfin_finance'
+    extra_hosts:
+     - "jwt-service:192.168.72.47"
+     - "luztenant-service:192.168.72.47"
+     - "luz-person:192.168.72.47"
+     - "luz-compensation:192.168.72.47"
+     - "luzfin-finance:192.168.72.47"
+     - "luz-accounting:192.168.72.47"
+     - "luz-keyvaluestore:192.168.72.47"
+     - "luz-article:192.168.72.47"
+    environment:
+      LUZFIN_JDBC: 'jdbc:postgresql://192.168.72.47:6543/luzfinance'
+      LUZFIN_DB_USER: 'luzfinance'
+      LUZFIN_DB_PASS: 'luzfinance'
+      IVY_HOST_PORT: 'http://192.168.72.47:8080'
+    ports:
+      - 9090:8080

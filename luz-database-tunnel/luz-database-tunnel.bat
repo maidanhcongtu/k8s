@@ -1,0 +1,1 @@
+kubectl -n devgcp run luz-database-tunnel -it --image=alpine/socat --tty --rm --expose=true --port=5432 tcp-listen:5432,fork,reuseaddr tcp-connect:luz-database:5432
