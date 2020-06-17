@@ -1,0 +1,23 @@
+# restart single container
+# docker-compose up -d --no-deps --build [service-name]
+version: '3.7'
+services:
+  api-gateway:
+    image: nginx:latest
+    #container_name: api_gateway
+    #restart: always
+    volumes:
+     - ./default-local.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - 8080:8080
+
+  service:
+    build:
+      context: 'D:\docker path'
+    environment:
+      ENV_NAME: 'env value'
+    ports:
+      - 9090:8080
+      - 8787:8787
+      - 9990:9990
+
