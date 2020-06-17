@@ -1,2 +1,0 @@
-CREATE DATABASE luzperson;
-GRANT ALL PRIVILEGES ON DATABASE luzperson TO postgres;

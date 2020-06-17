@@ -1,1 +1,1 @@
-kubectl -n devgcp port-forward svc/luz-database-tunnel --address 0.0.0.0 6543:5432
+kubectl -n [namespace] port-forward svc/database-tunnel --address 0.0.0.0 6543:5432

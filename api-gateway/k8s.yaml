@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: api-gateway
-        image: gcr.io/klara-tryout/api-gateway
+        image: gcr.io/myproject/api-gateway
         ports:
         - containerPort: 8080
           name: http

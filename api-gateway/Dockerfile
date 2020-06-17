@@ -1,5 +1,5 @@
 FROM nginx:latest
 
-ADD default.conf /etc/nginx/conf.d/
+ADD default-dev.conf /etc/nginx/conf.d/
 
 EXPOSE 8080

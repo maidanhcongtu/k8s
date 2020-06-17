@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build -t gcr.io/klara-tryout/api-gateway .
+docker build -t gcr.io/myproject/api-gateway .
