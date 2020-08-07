@@ -1,0 +1,26 @@
+# Example configuration for the webserver
+# at https://github.com/monopole/hello
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+commonLabels:
+  app: hello
+
+resources:
+- deployment.yaml
+- service.yaml
+
+configMapGenerator:
+- envs:
+  - config.properties
+  name: the-map
+  
+# - name: my-java-server-props
+#   files:
+#   - application.properties
+#   - more.properties
+  
+# - name: my-java-server-env-vars
+#   literals:    
+#   - JAVA_HOME=/opt/java/jdk
+#   - JAVA_TOOL_OPTIONS=-agentlib:hprof
